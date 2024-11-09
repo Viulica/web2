@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8">
+  <title>Prijava</title>
+  <link rel="stylesheet" href="/index.css">
+</head>
+<body>
+  <h1>SQL Injection & CSRF Demo - Prijava</h1>
+
+  <label for="vulnerability">Odaberi ranjivost:</label>
+  <select id="vulnerability">
+    <option value="none">Bez ranjivosti</option>
+    <option value="sql_injection">SQL Injection</option>
+    <option value="csrf">CSRF</option>
+  </select>
+
+  <h2>Prijava</h2>
+  <form id="login-form">
+    <input type="text" id="username" placeholder="Korisničko ime" required>
+    <input type="password" id="password" placeholder="Lozinka" required>
+    <button type="submit">Prijavi se</button>
+  </form>
+
+  <script src="login.js"></script>
+</body>
+</html>

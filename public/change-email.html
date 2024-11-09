@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8">
+  <title>Promjena e-mail adrese</title>
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap">
+</head>
+<body>
+  <h1>Promjena e-mail adrese</h1>
+  <form id="change-email-form">
+    <input type="email" id="new-email" placeholder="Nova e-mail adresa" required>
+    <button type="submit" style="margin:0 auto">Promijeni e-mail</button>
+  </form>
+
+  <button id="show-email-button" class="button">Prikaži trenutnu e-mail adresu</button>
+  <p id="current-email" style="display: none;"></p>
+
+  <p id="csrf-warning" style="margin-top: 20px; display: none;">
+    <a href="/evil.html" target="_blank" style="color: red; font-weight: bold;">
+      ⚠️ Kliknite ovdje za demonstraciju CSRF napada (zlonamjerni link)
+    </a>
+  </p>
+
+  <button id="logout-button" style="background-color: #d9534f; color: white;">Odjavi se</button>
+
+  <div id="result" style="display: none;"></div>
+
+  <script src="change-email.js"></script>
+  <script>
+    if (localStorage.getItem("vulnerability") === "csrf") {
+      document.getElementById("csrf-warning").style.display = "block";
+    }
+
+    document.getElementById("show-email-button").addEventListener("click", function() {
+  const emailDisplay = document.getElementById("current-email");
+
+  if (emailDisplay.style.display === "none" || emailDisplay.style.display === "") {
+    fetch("/user/get-email")
+      .then(response => response.json())
+      .then(data => {
+        emailDisplay.style.display = "block";
+        emailDisplay.textContent = `Trenutna e-mail adresa: ${data.email}`;
+      })
+      .catch(error => console.error("Greška prilikom dohvaćanja e-mail adrese:", error));
+  } else {
+    emailDisplay.style.display = "none";
+  }
+});
+
+    document.getElementById("logout-button").addEventListener("click", function() {
+      fetch("/logout", { method: "POST" })
+        .then(response => {
+          if (response.ok) {
+            localStorage.clear(); 
+            window.location.href = '/'; 
+          } else {
+            console.error("Greška prilikom odjave");
+          }
+        })
+        .catch(error => console.error("Greška prilikom odjave:", error));
+    });
+  </script>
+</body>
+</html>
