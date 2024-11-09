@@ -8,6 +8,7 @@ router.post('/', (req, res) => {
 
   if (vulnerability === 'sql_injection') {
     const query = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;
+    console.log(query);
     db.all(query, (err, rows) => { 
       if (err) {
         console.error("Detalji greške:", err);
