@@ -20,24 +20,17 @@ document.getElementById("vulnerability").addEventListener("change", function () 
       body: JSON.stringify({ username, password })
     })
     .then(response => {
-      if (response.status === 401) {
-        return response.text().then(errorText => {
-          alert(errorText); 
-          throw new Error(errorText);
-        });
-      } else if (!response.ok) {
-        return response.text().then(errorText => {
-          if (errorText.includes("Invalid CSRF token")) {
-            alert("Invalid CSRF token");
-          } else {
-            alert("Greška: " + errorText);
-          }
-          throw new Error(errorText);
+      if (!response.ok) {
+        return response.json().then(errorData => {
+          alert(errorData.error || "Greška prilikom prijave");
+          throw new Error(errorData.error);
         });
       }
-      if (response.redirected) {
-        window.location.href = response.url;
-      }
+      return response.json();
+    })
+    .then(data => {
+      alert(data.message);
+      window.location.href = data.redirectUrl;
     })
     .catch(error => {
       console.error("Greška prilikom prijave:", error);

@@ -7,7 +7,7 @@
 <body>
   <h1>CSRF Attack Demo</h1>
   <p>Ako ste prijavljeni u aplikaciju i otvorite ovu stranicu, vaša e-mail adresa će se promijeniti na "attacker@example.com".</p>
-
+  <p style="color: red; font-weight: bold;">⚠️ Kada se vratite na stranicu za promjenu e-mail adrese, provjerite koja je vaša e-mail adresa kako biste vidjeli rezultat CSRF napada.</p>
   <button onclick="window.location.href='/change-email'">Vrati se na promjenu e-mail adrese</button>
 
   <script>

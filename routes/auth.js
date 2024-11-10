@@ -15,7 +15,14 @@ router.post('/', (req, res) => {
         res.statu(500).send("Greška pri obradi zahtjeva");
       } else if (rows.length > 0) {
         req.session.userId = rows[0].id;
-        res.redirect('/change-email'); 
+        const message = "prijavljeni ste kao prvi korisnik u bazi - iskorištena ranjivost SQL injection"
+
+        res.json({
+          success: true,
+          message: message,
+          redirectUrl: '/change-email'
+        });
+
       } else {
         res.status(401).send("Prijava neuspješna (ranjiva)");
       }
@@ -29,7 +36,12 @@ router.post('/', (req, res) => {
           res.status(500).send("Greška pri obradi zahtjeva");
         } else if (rows.length > 0) {
           req.session.userId = rows[0].id;
-          res.redirect('/change-email'); 
+          message = "prijava uspješna (sigurna)!"
+          res.json({
+            success: true,
+            message: message,
+            redirectUrl: '/change-email'
+          });
         } else {
           res.status(401).send("Prijava neuspješna (sigurna)");
         }
