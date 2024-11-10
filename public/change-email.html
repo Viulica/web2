@@ -3,50 +3,51 @@
 <head>
   <meta charset="UTF-8">
   <title>Promjena e-mail adrese</title>
-  <link rel="stylesheet" href="index.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap">
+  <link rel="stylesheet" href="/styles/styles.css">
 </head>
 <body>
-  <h1>Promjena e-mail adrese</h1>
-  <form id="change-email-form">
-    <input type="email" id="new-email" placeholder="Nova e-mail adresa" required>
-    <button type="submit" style="margin:0 auto">Promijeni e-mail</button>
-  </form>
+  <div class="container">
+    <h1>Promjena e-mail adrese</h1>
+    <form id="change-email-form" class="form">
+      <input type="email" id="new-email" placeholder="Nova e-mail adresa" required>
+      <button type="submit" class="primary-button">Promijeni e-mail</button>
+    </form>
 
-  <button id="show-email-button" class="button">Prikaži trenutnu e-mail adresu</button>
-  <p id="current-email" style="display: none;"></p>
+    <button id="show-email-button" class="secondary-button">Prikaži trenutnu e-mail adresu</button>
+    <p id="current-email" class="current-email" style="display: none;"></p>
 
-  <p id="csrf-warning" style="margin-top: 20px; display: none;">
-    <a href="/evil.html" target="_blank" style="color: red; font-weight: bold;">
-      ⚠️ Kliknite ovdje za demonstraciju CSRF napada (zlonamjerni link)
-    </a>
-  </p>
+    <p id="csrf-warning" class="csrf-warning" style="display: none;">
+      <a href="/evil.html" target="_blank">
+        ⚠️ Kliknite ovdje za demonstraciju CSRF napada (zlonamjerni link)
+      </a>
+    </p>
 
-  <button id="logout-button" style="background-color: #d9534f; color: white;">Odjavi se</button>
+    <button id="logout-button" class="logout-button">Odjavi se</button>
+    <div id="result" class="result" style="display: none;"></div>
+  </div>
 
-  <div id="result" style="display: none;"></div>
-
-  <script src="change-email.js"></script>
+  <script src="/scripts/change-email.js"></script>
   <script>
     if (localStorage.getItem("vulnerability") === "csrf") {
       document.getElementById("csrf-warning").style.display = "block";
     }
 
     document.getElementById("show-email-button").addEventListener("click", function() {
-  const emailDisplay = document.getElementById("current-email");
+      const emailDisplay = document.getElementById("current-email");
 
-  if (emailDisplay.style.display === "none" || emailDisplay.style.display === "") {
-    fetch("/user/get-email")
-      .then(response => response.json())
-      .then(data => {
-        emailDisplay.style.display = "block";
-        emailDisplay.textContent = `Trenutna e-mail adresa: ${data.email}`;
-      })
-      .catch(error => console.error("Greška prilikom dohvaćanja e-mail adrese:", error));
-  } else {
-    emailDisplay.style.display = "none";
-  }
-});
+      if (emailDisplay.style.display === "none" || emailDisplay.style.display === "") {
+        fetch("/user/get-email")
+          .then(response => response.json())
+          .then(data => {
+            emailDisplay.style.display = "block";
+            emailDisplay.textContent = `Trenutna e-mail adresa: ${data.email}`;
+          })
+          .catch(error => console.error("Greška prilikom dohvaćanja e-mail adrese:", error));
+      } else {
+        emailDisplay.style.display = "none";
+      }
+    });
 
     document.getElementById("logout-button").addEventListener("click", function() {
       fetch("/logout", { method: "POST" })

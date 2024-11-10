@@ -10,8 +10,8 @@ router.get('/get-csrf-token', csrfProtection, (req, res) => {
 });
 
 router.post('/change-email', (req, res, next) => {
-  const vulnerability = req.headers['x-vulnerability'];
-  req.isVulnerable = vulnerability === 'csrf';
+  const vulnerability = req.headers['x-demo-vulnerability'];
+  req.isVulnerable = vulnerability === 'csrf'; 
 
   if (req.isVulnerable) {
     console.log("CSRF zaštita je isključena za ovaj zahtjev zbog postavke vulnerability.");

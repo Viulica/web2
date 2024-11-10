@@ -4,7 +4,7 @@ const db = require('../db');
 
 router.post('/', (req, res) => {
   const { username, password } = req.body;
-  const vulnerability = req.headers['x-vulnerability'];
+  const vulnerability = req.headers['x-demo-vulnerability'];
 
   if (vulnerability === 'sql_injection') {
     const query = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;

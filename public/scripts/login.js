@@ -15,7 +15,7 @@ document.getElementById("vulnerability").addEventListener("change", function () 
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-vulnerability": vulnerability
+        "x-demo-vulnerability": vulnerability
       },
       body: JSON.stringify({ username, password })
     })

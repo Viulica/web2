@@ -24,20 +24,22 @@ app.use(session({
 app.get('/', (req, res) => {
   if (req.session.userId) {
     return res.redirect('/change-email');
+  } else {
+    res.sendFile(path.join(__dirname, 'public', 'login.html'));
   }
-  res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
 app.get('/change-email', (req, res) => {
   if (!req.session.userId) {
     return res.redirect('/'); 
+  } else {
+    res.sendFile(path.join(__dirname, 'public', 'change-email.html'));
   }
-  res.sendFile(path.join(__dirname, 'public', 'change-email.html'));
 });
 
 app.use('/', authRoutes);
 app.use('/user', userRoutes);
 
 app.listen(PORT, () => {
-  console.log(`Server je pokrenut na http://localhost:${PORT}`);
+  console.log(`Server je pokrenut na portu ${PORT}`);
 });
